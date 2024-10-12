@@ -18,10 +18,10 @@ public class Diploma {
     private Sexo sexo;
     @Column(name = "nome_reitor")
     private String nomeReitor;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "diplomado_id")
     private Diplomado diplomado;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "curso_id")
     private Curso curso;
 

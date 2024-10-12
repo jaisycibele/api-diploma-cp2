@@ -6,11 +6,12 @@ import br.com.api_diploma.model.Diploma;
 import br.com.api_diploma.model.Diplomado;
 import br.com.api_diploma.model.Curso;
 import org.springframework.stereotype.Service;
+import br.com.api_diploma.model.Sexo;
+
 
 @Service
 public class DiplomaService {
 
-    // Método para converter DiplomaRequest em Diploma (Entidade)
     public Diploma requestToDiploma(DiplomaRequest diplomaRequest) {
         Diploma diploma = new Diploma();
         diploma.setDataConclusao(diplomaRequest.getDataConclusao());
@@ -21,12 +22,12 @@ public class DiplomaService {
         return diploma;
     }
 
-    // Método para converter Diploma (Entidade) em DiplomaResponse
     public DiplomaResponse diplomaToResponse(Diploma diploma) {
         DiplomaResponse diplomaResponse = new DiplomaResponse();
         Diplomado diplomado = diploma.getDiplomado();
         Curso curso = diploma.getCurso();
 
+        diplomaResponse.setId(diploma.getId());
         diplomaResponse.setNomeDiplomado(diplomado.getNome());
         diplomaResponse.setNacionalidade(diplomado.getNacionalidade());
         diplomaResponse.setNaturalidade(diplomado.getNaturalidade());
@@ -40,7 +41,6 @@ public class DiplomaService {
         return diplomaResponse;
     }
 
-    // Método para converter Diploma (Entidade) em DiplomaRequest
     public DiplomaRequest diplomaToRequest(Diploma diploma) {
         DiplomaRequest diplomaRequest = new DiplomaRequest();
         diplomaRequest.setDataConclusao(diploma.getDataConclusao());
@@ -50,4 +50,19 @@ public class DiplomaService {
         diplomaRequest.setCurso(diploma.getCurso());
         return diplomaRequest;
     }
+    public String gerarTextoDiploma(DiplomaResponse diplomaResponse) {
+        String tituloReitor = diplomaResponse.getSexoReitor() == Sexo.M ? "Prof. Dr." : "Profa. Dra.";
+        String cargoReitor = diplomaResponse.getSexoReitor() == Sexo.M ? "reitor" : "reitora";
+
+        return String.format(
+                "%s %s, da Universidade Fake, no uso de suas atribuições, confere a %s, de nacionalidade %s, natural de %s, portador do rg %s, o presente diploma de %s, do curso de %s, por ter concluído seus estudos nesta instituição de ensino no dia %s.",
+                tituloReitor, diplomaResponse.getNomeReitor(),
+                diplomaResponse.getNomeDiplomado(), diplomaResponse.getNacionalidade(),
+                diplomaResponse.getNaturalidade(), diplomaResponse.getNumeroRg(),
+                diplomaResponse.getTipoCurso(), diplomaResponse.getNomeCurso(),
+                diplomaResponse.getDataConclusao()
+        );
+    }
+
+
 }

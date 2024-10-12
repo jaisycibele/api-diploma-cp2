@@ -66,7 +66,7 @@ public class CursoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CursoResponse> update(@PathVariable Long id, @Valid @RequestBody CursoRequest cursoRequest) {
         Optional<Curso> cursoPersistido = cursoRepository.findById(id);
         if (cursoPersistido.isPresent()) {

@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class DiplomaResponse {
 
+    private String id;
     private String nomeDiplomado;
     private String nacionalidade;
     private String naturalidade;
@@ -20,6 +21,14 @@ public class DiplomaResponse {
 
     // Getters e Setters
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Link getLink() {
         return link;

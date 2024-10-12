@@ -23,19 +23,18 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                // desativando uma config padrão de proteção contra ataque csrf
-                // para facilitar nosso teste de login
+
                 .csrf(csrf -> csrf.disable())
-                // não armazena sessão do usuário
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        // libera o POST de /auth/login para todos
+
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        // libera o POST de /auth/register para todos
+
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        // restringe a criação (POST) de livros apenas a usuários ADMIN
-                        .requestMatchers(HttpMethod.GET, "/diploma").hasRole("USER")
-                        // libera todos os outros métodos da API para qualquer usuário AUTENTICADO
+
+                        .requestMatchers(HttpMethod.GET, "/diplomas").hasRole("USER")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -52,5 +51,5 @@ public class SecurityConfigurations {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    } // para trabalhar com hash de senha
+    }
 }

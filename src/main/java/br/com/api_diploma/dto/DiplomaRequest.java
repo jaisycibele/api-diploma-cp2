@@ -12,7 +12,6 @@ import java.util.Date;
 public class DiplomaRequest {
 
     @NotNull(message = "A data de conclusão é obrigatória")
-    @PastOrPresent(message = "A data de conclusão não pode ser futura")
     private String dataConclusao;
 
     @NotNull(message = "O sexo do reitor é obrigatório")
