@@ -70,7 +70,7 @@ public class DiplomaController {
         Optional<Diploma> diplomaPersistido = diplomaRepository.findById(id);
         if (diplomaPersistido.isPresent()) {
             Diploma diploma = diplomaService.requestToDiploma(diplomaRequest);
-            diploma.setId(id); // Verifique se o método setId está definido em Diploma
+            diploma.setId(id);
             Diploma diplomaAtualizado = diplomaRepository.save(diploma);
             DiplomaResponse diplomaResponse = diplomaService.diplomaToResponse(diplomaAtualizado);
             return new ResponseEntity<>(diplomaResponse, HttpStatus.OK);
@@ -83,7 +83,7 @@ public class DiplomaController {
         Optional<Diploma> diploma = diplomaRepository.findById(id);
         if (diploma.isPresent()) {
             diplomaRepository.delete(diploma.get());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Pode retornar NO_CONTENT após a exclusão
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

@@ -5,6 +5,9 @@ import br.com.api_diploma.dto.DiplomaResponse;
 import br.com.api_diploma.model.Diploma;
 import br.com.api_diploma.model.Diplomado;
 import br.com.api_diploma.model.Curso;
+import br.com.api_diploma.repository.CursoRepository;
+import br.com.api_diploma.repository.DiplomadoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.api_diploma.model.Sexo;
 
@@ -12,13 +15,27 @@ import br.com.api_diploma.model.Sexo;
 @Service
 public class DiplomaService {
 
+    @Autowired
+    private CursoRepository cursoRepository;
+
+    @Autowired
+    private DiplomadoRepository diplomadoRepository;
+
     public Diploma requestToDiploma(DiplomaRequest diplomaRequest) {
         Diploma diploma = new Diploma();
+
+        Curso curso = cursoRepository.findById(diplomaRequest.getCurso().getId())
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        Diplomado diplomado = diplomadoRepository.findById(diplomaRequest.getDiplomado().getId())
+                .orElseGet(() -> diplomadoRepository.save(diplomaRequest.getDiplomado()));
+
         diploma.setDataConclusao(diplomaRequest.getDataConclusao());
         diploma.setSexo(diplomaRequest.getSexo());
         diploma.setNomeReitor(diplomaRequest.getNomeReitor());
-        diploma.setDiplomado(diplomaRequest.getDiplomado());
-        diploma.setCurso(diplomaRequest.getCurso());
+        diploma.setDiplomado(diplomado);
+        diploma.setCurso(curso);
+
         return diploma;
     }
 
